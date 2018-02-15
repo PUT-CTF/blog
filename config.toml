@@ -1,0 +1,44 @@
+baseURL = "https://put-ctf.github.io/blog"
+languageCode = "pl"
+title = "PUT CTF blog"
+theme = "hucore"
+
+# publishDir = "docs"
+
+copyright = "&copy; 2018, Poznań | <a href=\"https://github.com/mgjohansen/hucore.git\" target=\"_blank\">Hucore theme</a> & <a href=\"http://gohugo.io\" target=\"_blank\">Hugo</a> ♥"
+# disqusShortname = "shortname"
+# googleAnalytics = "trackingcode"
+
+[taxonomies]
+tag = "tags"
+category = "categories"
+
+[params]
+description = "Strona zespołu PUT CTF"
+keywords = ["poznań", "security", "ctf"]
+author = "PUT CTF Team"
+sharingicons = true
+
+[params.highlight]
+style = "github"
+languages = ["python"]
+
+[[params.social]]
+url = "https://github.com/put-ctf"
+fa_icon = "fa-github"
+
+[[params.social]]
+url = "https://twitter.com/PUT_ctf"
+fa_icon = "fa-twitter"
+
+[[params.social]]
+url = "https://ctftime.org/team/40249"
+fa_icon = "fa-address-card-o"
+
+# [[params.social]]
+# url = "https://linkedin.com/in/username"
+# fa_icon = "fa-linkedin-square"
+
+# [[params.social]]
+# url = "/index.xml"
+# fa_icon = "fa-rss"
