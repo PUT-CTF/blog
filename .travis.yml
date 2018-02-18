@@ -1,20 +1,18 @@
-language: go
-
-go:
-  - master
+language: python
 
 addons:
   apt:
     packages:
       - python-pygments
-      
+
 install:
-  - go get github.com/spf13/hugo
+  - wget $HUGO_URL
+  - sudo dpkg -i hugo*.deb
   - rm -rf public || exit 0
 
 script:
-  - hugo --theme=HUCORE
-  
+  - hugo
+
 deploy:
   provider: pages
   skip_cleanup: true
@@ -22,3 +20,4 @@ deploy:
   local_dir: public
   on:
     branch: master
+
