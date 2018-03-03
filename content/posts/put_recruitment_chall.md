@@ -1,7 +1,7 @@
 ---
 title: "PUT - rekrutacja otwarta!"
 date: 2018-03-04T00:00:00+01:00
-draft: true
+draft: false
 ---
 
 ## We need YOU in... 
@@ -37,7 +37,7 @@ To zadanie można rozwiązać na wiele sposobów, starczy nam jedno, nawet najpr
 
 ## Baw się dobrze!
 
-I pamiętaj, wyślij do nas mailem flagę do każdego zadania, które uda Ci się rozwiązać! Opisy rozwiązań mile widziane! Autorów prosimy jednak o wstrzymanie się z ich publikacją do czasu zamknięcia zgłoszeń, czyli do końca marca (tj. 31.03.2018).
+I pamiętaj, wyślij do nas mailem flagę do każdego zadania, które uda Ci się rozwiązać! Opisy rozwiązań mile widziane! Autorów prosimy jednak o wstrzymanie się z ich publikacją do czasu zamknięcia zgłoszeń, czyli do końca marca (tj. 31.03.2018@23:59).
 
 Kończy nam się wiaderko Internetu, wracamy niebawem!
 
