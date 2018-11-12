@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="poznań, security, ctf" name="keywords">
+<meta content="PUT CTF Team" name="author">
+<meta property="og:title" content="PUT Security Day Challs - PUT CTF blog">
+<meta property="og:url" content="https://put-ctf.github.io/blog/posts/put_security_day_ctf/">
+<meta property="og:description" content="Strona zespołu PUT CTF">
+<meta property="og:type" content="website" />
+<title>PUT Security Day Challs | PUT CTF blog</title>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<link rel="stylesheet" href="https://put-ctf.github.io/blog/css/style.css">
+<link rel="shortcut icon" href="https://put-ctf.github.io/blog/wave.ico">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css">
+
+</head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://put-ctf.github.io/blog"><h1 class="title is-4">PUT CTF blog</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/put-ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://twitter.com/PUT_ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-twitter"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://ctftime.org/team/40249" target="_blank">
+            <span class="icon">
+              <i class="fa fa-address-card-o"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">PUT Security Day Challs</h1>
+    <h2 class="subtitle is-5">November 12, 2018 by PUT CTF Team</h2>
+    
+    <div class="content">
+      
+
+<h3 id="intro">Intro</h3>
+
+<p>As promised, we are publishing our tasks from recent CTF hosted during PUT Security Day vol. 0!</p>
+
+<h3 id="stegano">Stegano</h3>
+
+<h5 id="stegano-seal-100">Stegano seal [100]</h5>
+
+<p><a href="https://ctf.pozsec.pl/files/9a55714049d387addda664d999db2e57/seal.png">file</a></p>
+
+<p>&ldquo;You have been visited by a stegano seal. It brings you joy (and points).&rdquo;</p>
+
+<h5 id="art-gallery-150">Art Gallery [150]</h5>
+
+<p><a href="https://ctf.pozsec.pl/files/28b84102c686b61dacbf55879b8b51b6/Do_you_like_art.png">file</a></p>
+
+<p>&ldquo;Do you like the art?&rdquo;</p>
+
+<h5 id="relativity-200">Relativity [200]</h5>
+
+<p><a href="https://ctf.pozsec.pl/files/26d1752055310418f5cc874f8de17d44/Relativity.wav">file</a></p>
+
+<p>There&rsquo;s something weird about the recording we&rsquo;ve received.</p>
+
+<p>Once you got the message, wrap it with <code>PUT{</code> and <code>}</code>, and make it uppercase (e.g. if the message was &ldquo;example&rdquo;, the flag would look like <code>PUT{EXAMPLE}</code>).</p>
+
+<p>(Actually the challenge falls into stegano/crypto category)</p>
+
+<h5 id="png-wildcat">PNG wildcat</h5>
+
+<p><a href="https://ctf.pozsec.pl/files/d74e0231a9152a044bc52b90b2839136/wildcat.png">file</a></p>
+
+<p>I bet he holds some kind of a secret</p>
+
+<h3 id="re">RE</h3>
+
+<p>TBA</p>
+
+<h3 id="misc">Misc</h3>
+
+<h5 id="sanity-check-5">Sanity Check [5]</h5>
+
+<p><code>HACK THE PLANET!</code> ofc :)</p>
+
+<h5 id="qr-text-50">QR text [50]</h5>
+
+<p><a href="https://ctf.pozsec.pl/files/1e25491e1a18b5f2dddfb4dda44879cf/weird_file.txt">file</a></p>
+
+<p>What&rsquo;s wrong with that file?!</p>
+
+<p>HINT: Try inverting things..</p>
+
+<h5 id="galactiv-noise-150">Galactiv Noise [150]</h5>
+
+<p><a href="https://ctf.pozsec.pl/files/e3bbb86ad5e5da504d348fb50d450b0d/moutains.wav">file</a></p>
+
+<p>We&rsquo;ve never heard that&hellip; WTH?!</p>
+
+<p>Probably you want to ask Scotie ;)</p>
+
+<h6 id="msg-from-our-intelligence">Msg from our intelligence</h6>
+
+<p><a href="https://ctf.pozsec.pl/files/4b0ac392c4fd9ab95389e1fb9c257e06/message_from_our_intelligence.7z">file</a></p>
+
+<p>We have received a message from one of our best agents.</p>
+
+<p>Can you help us decipher it?</p>
+
+<h3 id="crypto">Crypto</h3>
+
+<h5 id="singlebyte-80">SingleByte [80]</h5>
+
+<p><a href="https://ctf.pozsec.pl/files/34c92d82be7b04176cec7718ca925a38/ciphertext">file</a></p>
+
+<p>Somewhere in the middle - there is a flag&hellip;</p>
+
+<p>HINT: how about XOR?</p>
+
+<h5 id="simplecrypt-100">SimpleCrypt [100]</h5>
+
+<p><a href="https://ctf.pozsec.pl/files/5646827822297221dd1aa5062a22f080/ciphertext.txt">file</a></p>
+
+<h5 id="ezrsa-200">EzRSA [200]</h5>
+
+<pre><code>n = 0xb51efc673cc8e95dd2b2a5c57fe17442ffe0e839545251d99f57d4f849847b999ab49d69727e3cdf8c46b0d58b2911077e72f5a6365f61ffe0fe32ecb73d6eaba83802192a91047da500382d0564735f614365bdf841c37a13e5636fb4d1358ca930b7143a2b0306954b1602124a19e25d0847251a3f6bae8d54cfe0e9842f3c63d58c3a275e98aad52a57e3058af22b3aaef24ad4808ce3a1252785002d06a62b5c1ef9466dce8954b9f1d912911b369a6c0ae64bdf6b2342fc1787a59cddc9414ce7ce26572579ea1e9600d8cb686f2f15784124f6eeb496893c5349127ccb2e42b838e8394de2acb2aaa4325a7ae732c8fe5d6b4d7d47ad6f8ef6799822c5
+
+e = 3
+
+d = 10158842775944441879845412522073645913593431921496039304017563009015613000152961953010735286029351465992156858265490011638069859459408299210172354146587934259469618944647452912521483719003264592154023983871077
+
+</code></pre>
+
+<p>What now?</p>
+
+<h5 id="back-to-the-future-250">Back to the future [250]</h5>
+
+<p>Our agency not only uses bulletproof crypto, but also steals secrets from the future. Unfortunately we cannot decrypt the message. Can you help us?</p>
+
+<p><a href="https://goo.gl/tY13CE">https://goo.gl/tY13CE</a></p>
+
+    </div>
+    
+        <div class="nav-left">
+    <a class="nav-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_security_day_ctf%2f" title="Share on Facebook" target="_blank"><span class="fa fa-facebook fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://plus.google.com/share?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_security_day_ctf%2f" title="Share on Google+" target="_blank"><span class="fa fa-google-plus fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_security_day_ctf%2f" title="Share on LinkedIn" target="_blank"><span class="fa fa-linkedin fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://twitter.com/home?status=PUT%20Security%20Day%20Challs - https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_security_day_ctf%2f" title="Tweet this" target="_blank"><span class="fa fa-twitter fa-2x"></span></a>
+    <a class="nav-item" href="http://www.reddit.com/submit?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_security_day_ctf%2f&title=PUT%20Security%20Day%20Challs" title="Share on Reddit" target="_blank"><span class="fa fa-reddit-alien fa-2x" aria-hidden="true"></span></a>
+    
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; 2018, Poznań | <a href="https://github.com/mgjohansen/hucore.git" target="_blank">Hucore theme</a> & <a href="http://gohugo.io" target="_blank">Hugo</a> ♥</p>
+  </div>
+</section>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js" integrity="sha256-+bhVTaRmJ/c07eV80nU8gD2cBBF0rYkf1txqXlrbvb0=" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/python.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>

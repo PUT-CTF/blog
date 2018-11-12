@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="poznań, security, ctf" name="keywords">
+<meta content="PUT CTF Team" name="author">
+<meta property="og:title" content="PUT - rekrutacja otwarta! - PUT CTF blog">
+<meta property="og:url" content="https://put-ctf.github.io/blog/posts/put_recruitment_chall/">
+<meta property="og:description" content="Strona zespołu PUT CTF">
+<meta property="og:type" content="website" />
+<title>PUT - rekrutacja otwarta! | PUT CTF blog</title>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<link rel="stylesheet" href="https://put-ctf.github.io/blog/css/style.css">
+<link rel="shortcut icon" href="https://put-ctf.github.io/blog/wave.ico">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css">
+
+</head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://put-ctf.github.io/blog"><h1 class="title is-4">PUT CTF blog</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/put-ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://twitter.com/PUT_ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-twitter"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://ctftime.org/team/40249" target="_blank">
+            <span class="icon">
+              <i class="fa fa-address-card-o"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">PUT - rekrutacja otwarta!</h1>
+    <h2 class="subtitle is-5">March 4, 2018 by PUT CTF Team</h2>
+    
+    <div class="content">
+      
+
+<h2 id="we-need-you-in">We need YOU in&hellip;</h2>
+
+<p>&hellip; naszym zespole! Jeśli interesujesz się szeroko pojętym <code>bezpieczeństwem</code>, lub znudziły Ci się zwykłe hackathony/compo oraz masz ochotę się nie wyspać - to dobrze trafiłeś/aś! Nasz CTFowy zespół poszukuje zawodników. W tym celu postanowiliśmy ogłosić otwarty nabór.</p>
+
+<h2 id="ale-po-kolei">Ale po kolei!</h2>
+
+<p>Dla wszystkich chętnych przygotowaliśmy parę prostych zadań. Dla osób, które parsują nagłówki bitmapy w głowie, zjadły zęby na ROPchainach czy znają na pamięć całą tablicę syscalli Linuxa (coś koło 300 pozycji), poniższe problemy będą trywialne. Jeśli natomiast dopiero zaczynasz z CTFami i właśnie dowiedziałeś/aś się, że na Twojej uczelni działa zespół łapiący flagi - odnalezienie zaszytych informacji z pewnością dostarczy Tobie dużo frajdy. Przy okazji, zobaczysz jak mniej więcej wygląda rywalizacja w tego typu wydarzeniach.</p>
+
+<p>Ważna informacja, niemal kluczowa - ułatwiliśmy Wam zadanie, każda flaga ma jednakowy format. Jeśli podczas rozwiązywania zadań natkniesz się na ciąg znaków <code>PUT{tutaj_jakiś_tekst}</code>, to znaczy że jesteś w domu - to jest właśnie flaga! Koniecznie podeślij nam rozwiązanie na naszego maila (<code>putctf@protonmail.com</code>)!</p>
+
+<h2 id="ach-te-nowe-technologie">Ach, te nowe technologie</h2>
+
+<p>Chcieliśmy spróbować Javy w wersji Script. Niestety, coś poszło nie tak. Wyszedł nam co prawda rozpoznawany przez przeglądarkę kod, natomiast jest on totalnie niezrozumiały! Jesteś w stanie pomóc nam rozwiązać tę zagadkę? Web-aplikacje takie trudne&hellip;</p>
+
+<p><a href="https://raw.githubusercontent.com/PUT-CTF/put_small_ctf_1/master/1_javascript.js">wchodzę_w_to!</a></p>
+
+<h2 id="może-nie-widać-tego-na-pierwszy-rzut-oka">Może nie widać tego na pierwszy rzut oka&hellip;</h2>
+
+<p>ale ten obrazek, nie jest zwyczajny. Gdzieś tam kryje się flaga, którą trzeba odzyskać. Niestety, zapomnieliśmy jak to się robi&hellip;  Pomożesz? ;) Wystarczy wypakować zipa (nie pamiętamy hasła&hellip;)  i chwilę pomyśleć&hellip; (hint: może przydać się Windows)</p>
+
+<p><a href="https://github.com/PUT-CTF/put_small_ctf_1/blob/master/2_stegano.zip">pokażcie_co_tam_macie</a></p>
+
+<h2 id="symboliczne-crackme">Symboliczne crackme</h2>
+
+<p>Kolejną misją, jest crackme. Ten dziwny ciąg znaków pewnie kojarzysz. Dwa <code>==</code> podpowiadają, że jest to base64. Piszemy o tym, ponieważ tyle pamiętamy. Możesz zamienić ten tekst na binarkę na przykład w ten sposób: <code>cat plik_tekstowy.txt | base64 -d &gt; file.bin</code>. Niestety, autor zadania zgubił gdzieś pasujące hasło. Wystarczy, że je znajdziesz. Wydaje nam się, że było dość długie, także rekrutacja może się skończyć przed sprawdzeniem wszystkich możliwości!</p>
+
+<p>To zadanie można rozwiązać na wiele sposobów, starczy nam jedno, nawet najprostsze rozwiązanie. Jeśli zaprzęgniesz do tego celu SMT solver albo poszukasz ataku <em>side channel</em>, to wywrzesz na nas jeszcze większe wrażenie, niż rozwiązując je one-linerem!</p>
+
+<p><a href="https://github.com/PUT-CTF/put_small_ctf_1/blob/master/3_crackme_0x001.tar.gz">pobrałem_debugger_i_hexedytor_dajcie_zadanie!</a></p>
+
+<h2 id="baw-się-dobrze">Baw się dobrze!</h2>
+
+<p>I pamiętaj, wyślij do nas mailem flagę do każdego zadania, które uda Ci się rozwiązać! Opisy rozwiązań mile widziane! Autorów prosimy jednak o wstrzymanie się z ich publikacją do czasu zamknięcia zgłoszeń, czyli do końca marca (tj. 31.03.2018@23:59).</p>
+
+<p>Kończy nam się wiaderko Internetu, wracamy niebawem!</p>
+
+<p>Over and out.</p>
+
+    </div>
+    
+        <div class="nav-left">
+    <a class="nav-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_recruitment_chall%2f" title="Share on Facebook" target="_blank"><span class="fa fa-facebook fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://plus.google.com/share?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_recruitment_chall%2f" title="Share on Google+" target="_blank"><span class="fa fa-google-plus fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_recruitment_chall%2f" title="Share on LinkedIn" target="_blank"><span class="fa fa-linkedin fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://twitter.com/home?status=PUT%20-%20rekrutacja%20otwarta%21 - https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_recruitment_chall%2f" title="Tweet this" target="_blank"><span class="fa fa-twitter fa-2x"></span></a>
+    <a class="nav-item" href="http://www.reddit.com/submit?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fposts%2fput_recruitment_chall%2f&title=PUT%20-%20rekrutacja%20otwarta%21" title="Share on Reddit" target="_blank"><span class="fa fa-reddit-alien fa-2x" aria-hidden="true"></span></a>
+    
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; 2018, Poznań | <a href="https://github.com/mgjohansen/hucore.git" target="_blank">Hucore theme</a> & <a href="http://gohugo.io" target="_blank">Hugo</a> ♥</p>
+  </div>
+</section>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js" integrity="sha256-+bhVTaRmJ/c07eV80nU8gD2cBBF0rYkf1txqXlrbvb0=" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/python.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>

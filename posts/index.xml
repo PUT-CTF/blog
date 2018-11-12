@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on PUT CTF blog</title>
+    <link>https://put-ctf.github.io/blog/posts/</link>
+    <description>Recent content in Posts on PUT CTF blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pl</language>
+    <copyright>&amp;copy; 2018, Poznań | &lt;a href=&#34;https://github.com/mgjohansen/hucore.git&#34; target=&#34;_blank&#34;&gt;Hucore theme&lt;/a&gt; &amp; &lt;a href=&#34;http://gohugo.io&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; ♥</copyright>
+    <lastBuildDate>Mon, 12 Nov 2018 15:12:15 +0100</lastBuildDate>
+    
+	<atom:link href="https://put-ctf.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PUT Security Day Challs</title>
+      <link>https://put-ctf.github.io/blog/posts/put_security_day_ctf/</link>
+      <pubDate>Mon, 12 Nov 2018 15:12:15 +0100</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/posts/put_security_day_ctf/</guid>
+      <description>Intro As promised, we are publishing our tasks from recent CTF hosted during PUT Security Day vol. 0!
+Stegano Stegano seal [100] file
+&amp;ldquo;You have been visited by a stegano seal. It brings you joy (and points).&amp;rdquo;
+Art Gallery [150] file
+&amp;ldquo;Do you like the art?&amp;rdquo;
+Relativity [200] file
+There&amp;rsquo;s something weird about the recording we&amp;rsquo;ve received.
+Once you got the message, wrap it with PUT{ and }, and make it uppercase (e.</description>
+    </item>
+    
+    <item>
+      <title>PUT - rekrutacja otwarta!</title>
+      <link>https://put-ctf.github.io/blog/posts/put_recruitment_chall/</link>
+      <pubDate>Sun, 04 Mar 2018 00:00:00 +0100</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/posts/put_recruitment_chall/</guid>
+      <description>We need YOU in&amp;hellip; &amp;hellip; naszym zespole! Jeśli interesujesz się szeroko pojętym bezpieczeństwem, lub znudziły Ci się zwykłe hackathony/compo oraz masz ochotę się nie wyspać - to dobrze trafiłeś/aś! Nasz CTFowy zespół poszukuje zawodników. W tym celu postanowiliśmy ogłosić otwarty nabór.
+Ale po kolei! Dla wszystkich chętnych przygotowaliśmy parę prostych zadań. Dla osób, które parsują nagłówki bitmapy w głowie, zjadły zęby na ROPchainach czy znają na pamięć całą tablicę syscalli Linuxa (coś koło 300 pozycji), poniższe problemy będą trywialne.</description>
+    </item>
+    
+    <item>
+      <title>Hello World</title>
+      <link>https://put-ctf.github.io/blog/posts/hello-world/</link>
+      <pubDate>Sun, 15 Oct 2017 13:13:13 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/posts/hello-world/</guid>
+      <description>Witamy na stronie zespołu PUT CTF (PUT Underground Team)!
+Gdyby ktoś nie kojarzył - PUT to Poznań University of Technology, czyli angielskie tłumaczenie Politechniki Poznańskiej, zaś CTF to zawody Capture The Flag. A jeśli rozwinięcia skrótów dalej nic nie mówią, to polecamy wpis cenionego polskiego eksperta od bezpieczeństwa komputerowego o CTFach oraz stronę politechniki.
+Jeśli interesuje Cię praktyczna strona bezpieczeństwa komputerowego, zapraszamy do lektury! Na niniejszej stronie postaramy się opisywać co ciekawsze zadania, które rozwiązaliśmy podczas CTFów.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="poznań, security, ctf" name="keywords">
+<meta content="PUT CTF Team" name="author">
+<meta property="og:title" content="SHA2017 Teaser: Crypto engine - PUT CTF blog">
+<meta property="og:url" content="https://put-ctf.github.io/blog/writeups/2017-sha2017teaser-crypto_engine/">
+<meta property="og:description" content="Strona zespołu PUT CTF">
+<meta property="og:type" content="website" />
+<title>SHA2017 Teaser: Crypto engine | PUT CTF blog</title>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<link rel="stylesheet" href="https://put-ctf.github.io/blog/css/style.css">
+<link rel="shortcut icon" href="https://put-ctf.github.io/blog/wave.ico">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css">
+
+</head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://put-ctf.github.io/blog"><h1 class="title is-4">PUT CTF blog</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/put-ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://twitter.com/PUT_ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-twitter"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://ctftime.org/team/40249" target="_blank">
+            <span class="icon">
+              <i class="fa fa-address-card-o"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">SHA2017 Teaser: Crypto engine</h1>
+    <h2 class="subtitle is-5">June 12, 2017 by PUT CTF Team</h2>
+    
+      <div class="tags">
+    
+        <a class="button is-link" href="/blog/tags/crypto">crypto</a>
+    
+        <a class="button is-link" href="/blog/tags/2017">2017</a>
+    
+</div>
+
+    
+    <div class="content">
+      
+
+<h1 id="intro">Intro</h1>
+
+<p><img src="https://github.com/PUT-CTF/writeups/raw/master/SHA2017%20Teaser/img/flag.png" alt="alttext" title="flag" /></p>
+
+<p>First we notice that color square is added for every three letters in text to encrypt. At the end of image we have <code>n mod 3</code> two-decimal hex numbers. Also, color of previous squares didn&rsquo;t change if we add more letters. Knowing that the flag must be in format <code>flag{md5hash}</code> we have tried encrypt <code>flag{x</code></p>
+
+<p><img src="https://github.com/PUT-CTF/writeups/raw/master/SHA2017%20Teaser/img/flagx.png" alt="alttext" title="'flag{x'" /></p>
+
+<p>And we get what we want to. RGB code of the first color was exactly the same as the color of the flag, and also second color had only different blue value in comprasion with the flag. So, it&rsquo;s brute force time!</p>
+
+<h1 id="preparing">Preparing</h1>
+
+<p>First, We prepared code for downloading image and changing it to the color values. Every square is 40x40 with some border, so we take pixel at <code>(5, 20)</code>. Also, we didn&rsquo;t analyze the text on the flag, we now that the last character must be <code>}</code>, so it will leave us only one character to guess. Here code comes!</p>
+
+<pre><code>from PIL import Image
+import requests
+import numpy as np
+
+def download_img(url):
+    img = Image.open(requests.get(url, stream=True).raw)
+    img = np.array(img.getdata())
+    img = np.resize(img, (40, int(len(img)/40), 3))
+    return img
+
+def img_to_code(url):
+    img = download_img(url)
+    length = len(img[0])
+    column = 20
+    array = []
+    while column &lt; length:
+        for i in img[5][column]:
+            array.append(i)
+        column = column + 40
+    return array
+</code></pre>
+
+<h1 id="brute-force">Brute force</h1>
+
+<p>We now that the flag is in the <code>flag{md5hash}</code> format, so we only have to brute force values in <code>[a-fA-F0-9]</code>. To get new square encrypted text must be multiplication of 3. This leaded to not-so-beautiful <code>if</code> statement in our solution, but <em>it works</em> :D</p>
+
+<pre><code>flag_url = &quot;https://cryptoengine.stillhackinganyway.nl/flag&quot;
+flag = img_to_code(flag_url)
+print(flag)
+
+url = &quot;https://cryptoengine.stillhackinganyway.nl/encrypt?text=&quot;
+text = &quot;fla&quot;
+
+enc_text = img_to_code(url+text)
+possible = &quot;abcdefABCDEF0123456789&quot;
+
+while len(enc_text) &lt; len(flag):
+    len_enc = len(enc_text)
+    cur_three = &quot;&quot;
+    start = 0
+    if(text == &quot;fla&quot;):
+        cur_three = &quot;g{&quot;
+        start = 2
+    for i in range(start, 3):
+        for x in possible:
+            temp = cur_three + x #guess next letter
+            temp = temp + &quot;a&quot;*(3-len(temp)) #fill to three letters
+            temp_url = url+text+temp #concatenate url
+            print(temp_url)
+            attempt = img_to_code(temp_url)
+            if attempt[len_enc+i] == flag[len_enc+i]: #if guess is correct
+                cur_three = cur_three + x
+                break
+    text = text + cur_three
+    enc_text = img_to_code(url+text)
+</code></pre>
+
+<p><img src="https://github.com/PUT-CTF/writeups/raw/master/SHA2017%20Teaser/img/flagalmost.png" alt="alttext" title="flag from our algorithm" /></p>
+
+<h1 id="get-the-flag">Get the flag</h1>
+
+<p>After that we bruteforced by hand last char of md5hash and get the flag! <code>flag{deaf983eb34e485ce9d2aff0ae44f852}</code></p>
+
+<p>&ndash;
+maverick, <strong>PUT CTF team</strong></p>
+
+    </div>
+    
+        <div class="nav-left">
+    <a class="nav-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-crypto_engine%2f" title="Share on Facebook" target="_blank"><span class="fa fa-facebook fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://plus.google.com/share?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-crypto_engine%2f" title="Share on Google+" target="_blank"><span class="fa fa-google-plus fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-crypto_engine%2f" title="Share on LinkedIn" target="_blank"><span class="fa fa-linkedin fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://twitter.com/home?status=SHA2017%20Teaser%3a%20Crypto%20engine - https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-crypto_engine%2f" title="Tweet this" target="_blank"><span class="fa fa-twitter fa-2x"></span></a>
+    <a class="nav-item" href="http://www.reddit.com/submit?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-crypto_engine%2f&title=SHA2017%20Teaser%3a%20Crypto%20engine" title="Share on Reddit" target="_blank"><span class="fa fa-reddit-alien fa-2x" aria-hidden="true"></span></a>
+    
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; 2018, Poznań | <a href="https://github.com/mgjohansen/hucore.git" target="_blank">Hucore theme</a> & <a href="http://gohugo.io" target="_blank">Hugo</a> ♥</p>
+  </div>
+</section>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js" integrity="sha256-+bhVTaRmJ/c07eV80nU8gD2cBBF0rYkf1txqXlrbvb0=" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/python.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>

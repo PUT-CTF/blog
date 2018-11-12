@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on PUT CTF blog</title>
+    <link>https://put-ctf.github.io/blog/tags/</link>
+    <description>Recent content in Tags on PUT CTF blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pl</language>
+    <copyright>&amp;copy; 2018, Poznań | &lt;a href=&#34;https://github.com/mgjohansen/hucore.git&#34; target=&#34;_blank&#34;&gt;Hucore theme&lt;/a&gt; &amp; &lt;a href=&#34;http://gohugo.io&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; ♥</copyright>
+    <lastBuildDate>Fri, 11 Aug 2017 14:20:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://put-ctf.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>2017</title>
+      <link>https://put-ctf.github.io/blog/tags/2017/</link>
+      <pubDate>Fri, 11 Aug 2017 14:20:00 +0100</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/tags/2017/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>2018</title>
+      <link>https://put-ctf.github.io/blog/tags/2018/</link>
+      <pubDate>Mon, 23 Jul 2018 10:44:58 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/tags/2018/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Crypto</title>
+      <link>https://put-ctf.github.io/blog/tags/crypto/</link>
+      <pubDate>Fri, 11 Aug 2017 14:20:00 +0100</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/tags/crypto/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Forensics</title>
+      <link>https://put-ctf.github.io/blog/tags/forensics/</link>
+      <pubDate>Fri, 11 Aug 2017 14:20:00 +0100</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/tags/forensics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Injection</title>
+      <link>https://put-ctf.github.io/blog/tags/injection/</link>
+      <pubDate>Mon, 23 Jul 2018 10:44:58 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/tags/injection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sqli</title>
+      <link>https://put-ctf.github.io/blog/tags/sqli/</link>
+      <pubDate>Sun, 11 Jun 2017 00:00:00 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/tags/sqli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Web</title>
+      <link>https://put-ctf.github.io/blog/tags/web/</link>
+      <pubDate>Mon, 23 Jul 2018 10:44:58 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/tags/web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Xml</title>
+      <link>https://put-ctf.github.io/blog/tags/xml/</link>
+      <pubDate>Mon, 23 Jul 2018 10:44:58 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/tags/xml/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

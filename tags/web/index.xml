@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web on PUT CTF blog</title>
+    <link>https://put-ctf.github.io/blog/tags/web/</link>
+    <description>Recent content in Web on PUT CTF blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pl</language>
+    <copyright>&amp;copy; 2018, Poznań | &lt;a href=&#34;https://github.com/mgjohansen/hucore.git&#34; target=&#34;_blank&#34;&gt;Hucore theme&lt;/a&gt; &amp; &lt;a href=&#34;http://gohugo.io&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; ♥</copyright>
+    <lastBuildDate>Mon, 23 Jul 2018 10:44:58 +0200</lastBuildDate>
+    
+	<atom:link href="https://put-ctf.github.io/blog/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>2018 Ctfzone Piggybank</title>
+      <link>https://put-ctf.github.io/blog/writeups/2018-ctfzone-piggybank/</link>
+      <pubDate>Mon, 23 Jul 2018 10:44:58 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/writeups/2018-ctfzone-piggybank/</guid>
+      <description>Piggy-Bank (WEB - EASY) - 29 solves Hack some bank for me.  First, we played a little bit with the website - there were index, register and login pages accessible for all the users, and Profile, VIP, For developers and Transfer pages for logged-in users.
+Profile page just showed the account balance, Transfer allowed moving your money to other accounts, and VIP was just saying that it&amp;rsquo;d reveal its secrets once we have 1&amp;rsquo;000&amp;rsquo;000 coins on our account (and we started with 110).</description>
+    </item>
+    
+  </channel>
+</rss>

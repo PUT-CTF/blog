@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="poznań, security, ctf" name="keywords">
+<meta content="PUT CTF Team" name="author">
+<meta property="og:title" content="SHA2017 Teaser: Website attack - PUT CTF blog">
+<meta property="og:url" content="https://put-ctf.github.io/blog/writeups/2017-sha2017teaser-website_attack/">
+<meta property="og:description" content="Strona zespołu PUT CTF">
+<meta property="og:type" content="website" />
+<title>SHA2017 Teaser: Website attack | PUT CTF blog</title>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<link rel="stylesheet" href="https://put-ctf.github.io/blog/css/style.css">
+<link rel="shortcut icon" href="https://put-ctf.github.io/blog/wave.ico">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css">
+
+</head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://put-ctf.github.io/blog"><h1 class="title is-4">PUT CTF blog</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile">
+          
+          <a class="level-item" href="https://github.com/put-ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://twitter.com/PUT_ctf" target="_blank">
+            <span class="icon">
+              <i class="fa fa-twitter"></i>
+            </span>
+          </a>
+          
+          <a class="level-item" href="https://ctftime.org/team/40249" target="_blank">
+            <span class="icon">
+              <i class="fa fa-address-card-o"></i>
+            </span>
+          </a>
+          
+        </nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">SHA2017 Teaser: Website attack</h1>
+    <h2 class="subtitle is-5">June 11, 2017 by PUT CTF Team</h2>
+    
+      <div class="tags">
+    
+        <a class="button is-link" href="/blog/tags/crypto">crypto</a>
+    
+        <a class="button is-link" href="/blog/tags/forensics">forensics</a>
+    
+        <a class="button is-link" href="/blog/tags/sqli">sqli</a>
+    
+        <a class="button is-link" href="/blog/tags/2017">2017</a>
+    
+</div>
+
+    
+    <div class="content">
+      
+
+<h1 id="website-attack-200-17-solves">Website Attack (200) - 17 solves</h1>
+
+<pre><code>Our website received an attack in 2013, we managed to capture the attack in this pcap. Can you find out if we leaked some sensitive information?
+</code></pre>
+
+<h2 id="the-beginning-wireshark-problem">The beginning - Wireshark problem</h2>
+
+<p>After opening the provided pcap file in Wireshark, we could see that there&rsquo;s a problem. Besides <code>tcp</code> packets, there were some malformed ones - which under closer inspection turned out to be named <code>GSM over IP</code>. At first we didn&rsquo;t know, whether it is true and the task was going to include some voice communication, but just a quick glance revealed, that these were normal HTTP protocol packets and contained some HTTP requests and responses. This situation - misinterpreting HTTP packets as IPA - disturbed us to use all of Wireshark goodnesses, like exporting HTTP objects. Due to the overwhelming size of pcap file, we just <em>had to</em> fix it.
+After a short google research, we found a solution here - <a href="https://ask.wireshark.org/answer_link/2033/">https://ask.wireshark.org/answer_link/2033/</a>, namely to correct protocol dissectors in: <code>Analyze -&gt; Enabled protocols</code> by turning off <code>GSM over IP ip.access CCM sub-protocol</code> and <code>GSM over IP protocol as used by ip.access</code>. Then, we could freely filter through the capture file and use <code>Export Objects -&gt; HTTP</code>.</p>
+
+<h2 id="the-initial-analysis">The initial analysis</h2>
+
+<p>(In fact, this part happened before fixing the problem with dissectors.)
+Using <code>Follow TCP stream</code>, we peeked in the communication between server and client. We&rsquo;ve observed, that:
+* Client requested index page
+* Client requested bootstrap.css file
+* Client made a search for <code>kl</code> (<code>/?action=search&amp;words=kl&amp;sort=stock</code>) and was redirected to <code>Location: http://10.5.5.208:5000/?action=display&amp;what=ce3926706794d911</code>, therefore it involved some encoding/encryption
+* Client made a search for <code>Trad</code> (<code>/?action=search&amp;words=Trad&amp;sort=stock</code>) and was redirected to <code>Location: http://10.5.5.208:5000/?action=display&amp;what=f1274d671988ce151a0b</code>.
+This time, the contents of <em>What</em> parameter were longer by 4 digits (possibly 2 bytes, as what contained only hex digits), so it couldn&rsquo;t be a block cipher.
+* Client made an improper search.
+* Client made a search for <code>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</code> and got redirected to <code>Location: http://10.5.5.208:5000/?action=display&amp;what=e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032e4146d4252bafb3b38212df186497a74799edb6fda5b44</code>.
+Note, that there&rsquo;s something strange about these hex digits:
+    <code>
+    e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032
+    e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032
+    e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032
+    e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032
+    e4146d4252bafb3b38212df186497a74799edb6fda5b44
+</code>
+   1. It&rsquo;s not an encoding.
+   2. There&rsquo;s a cycle of 64 hex digits - maybe the key is short and reused?
+   3. There&rsquo;s something at the end appended - maybe it&rsquo;s information about sorting (<code>sort=stock</code>)?</p>
+
+<p>Anyways, the rest of the capture file comprised over two thousands of HTTP requests - which had only encrypted/encoded part inside (without plaintext as in the previous three examples).</p>
+
+<p>We&rsquo;ve noticed some different responses - like <code>HTTP/1.1 500 INTERNAL SERVER ERROR</code>&rsquo;s or <code>Lets not do that...</code> (like in TCP stream #2404).</p>
+
+<p>Then, having only the following, we stopped for a longer while:</p>
+
+<pre><code>2:kl
+16:ce3926706794d911
+
+4:trad
+20:f1274d671988ce151a0b
+
+145:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+302:e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032e4146d4252bafb3b38212df186497a74799edb6fda5b44
+
+12 + 2 * x
+</code></pre>
+
+<h2 id="the-second-attempt">The second attempt</h2>
+
+<p>Well, we should have paid more attention to the description. <code>2013</code> was a signifant clue - leading to <a href="https://en.wikipedia.org/wiki/Lucky_Thirteen_attack">Lucky thirteen</a> attack.
+In short, it&rsquo;s about breaking TLS - so it didn&rsquo;t match our scenario. But, after some more research we&rsquo;ve found the following sentence:</p>
+
+<pre><code>In March 2013, there were new attack scenarios proposed by Isobe, Ohigashi, Watanabe and Morii,[29] as well as AlFardan, Bernstein, Paterson, Poettering and Schuldt that use new statistical biases in RC4 key table[30] to recover plaintext with large number of TLS encryptions.[31][32]
+</code></pre>
+
+<p>RC4 is in fact a stream cipher. Our next search was for <code>recover key rc4</code> and <code>plaintext attack on rc4</code>, which led to <a href="https://crypto.stackexchange.com/a/24547">https://crypto.stackexchange.com/a/24547</a>. Bingo! There&rsquo;s an attack! For maths, follow the link above. What was the most important is the following:
+given plaintext <code>M1</code> and ciphertext&rsquo;s <code>C1</code> and <code>C2</code>, we can XOR it all to receive <code>M2</code> if the key was reused. Being super excited, we&rsquo;ve written first POC:</p>
+
+<pre><code>a = &quot;af7d6f4240be9a2d31252290ef5b7e797dd7fc3be66d6d6766b5375a79b84d42&quot;
+b = &quot;e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032&quot;
+c = &quot;4141414141414141414141414141414141414141414141414141414141414141&quot;
+r = &quot;&quot;
+for i in range(len(a) / 2):
+	aa = ord(a[i*2:i*2 + 2].decode('hex'))
+	bb = ord(b[i*2:i*2 + 2].decode('hex'))
+	cc = ord(c[i*2:i*2 + 2].decode('hex'))
+	
+	r = r + chr(aa ^ bb ^ cc)
+print r
+</code></pre>
+
+<p>Wow, it worked: <code>(CASE WHEN (SELECT SUBSTR(sql,1</code>!
+Then we&rsquo;ve tried to decrypt one complete query, and it succeeded.
+It turned out, that the appendix  to the query isn&rsquo;t that significant, and in fact is about result&rsquo;s sorting.</p>
+
+<h2 id="the-integration-part">The integration part</h2>
+
+<p>At that moment, we were able to decrypt any query we&rsquo;ve had. But, all our work were conducted <em>by hand</em>. And there were tons of queries to decrypt.
+Being lazy, we took advantage of wireshark <code>Export HTTP objects</code>, saved it all to files (note, that the query is contained in the file name, and the response is in the contents), and iterated through downloaded files.</p>
+
+<pre><code>from os import listdir
+D = listdir('C:/Users/your_favourite_user/Desktop/exported')
+
+for d in D:
+    z = d[23:]
+    r = &quot;&quot;
+    for I in range(len(z) / 64 + 1):
+            a = z[I*64:(I+1)*64]
+            b = &quot;e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032&quot;
+            c = &quot;4141414141414141414141414141414141414141414141414141414141414141&quot;
+            for i in range(len(a) / 2):
+                    aa = ord(a[i*2:i*2 + 2].decode('hex'))
+                    bb = ord(b[i*2:i*2 + 2].decode('hex'))
+                    cc = ord(c[i*2:i*2 + 2].decode('hex'))
+    	
+                    r = r + chr(aa ^ bb ^ cc)
+    print r
+</code></pre>
+
+<p>What we&rsquo;ve got was a record of <em>blind SQL injection</em> attack!</p>
+
+<pre><code>(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = '{' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'z' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'y' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'x' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 's' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'r' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'q' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'p' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'w' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'v' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'u' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 't' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'k' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'j' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'i' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'h' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'o' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'n' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'm' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'l' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'c' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'b' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'a' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = '`' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'g' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'f' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'e' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'd' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = '[' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'Z' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'Y' THEN stock ELSE price END)
+
+(CASE WHEN (SELECT SUBSTR(flag,5,1)  FROM secret_flag LIMIT 0,1) = 'X' THEN stock ELSE price END)
+</code></pre>
+
+<p>But how to know, whether the query hits or misses in this <em>blind SQLi</em>? All the responses had the same length!</p>
+
+<p>By binary file comparision (we know, that the first character of flag is &lsquo;f&rsquo;, as the flag has the flag{hash} format) it turned out, that the only thing that is different, is the ordering of results.
+Yet again, being lazy, we made some modifications to the script:</p>
+
+<pre><code>from os import listdir
+
+D = listdir('C:/Users/your_favourite_user/Desktop/exported')
+
+# Decrypt routine, without changes
+def decrypt(z):
+    r = &quot;&quot;
+    for I in range(len(z) / 64 + 1):
+        a = z[I*64:(I+1)*64]
+	
+        b = &quot;e4146d4252bafb3b38212df186497a7479d5e95af4796e7573a65e6849952032&quot;
+        c = &quot;4141414141414141414141414141414141414141414141414141414141414141&quot;
+        for i in range(len(a) / 2):
+            aa = ord(a[i*2:i*2 + 2].decode('hex'))
+            bb = ord(b[i*2:i*2 + 2].decode('hex'))
+            cc = ord(c[i*2:i*2 + 2].decode('hex'))
+    	
+            r = r + chr(aa ^ bb ^ cc)
+    return r
+
+# A flag placeholder (string is immutable :/ )
+flag = [' ' for _ in range(40)]
+
+# For all files
+for d in D:
+    f = open('C:/Users/your_favourite_user/Desktop/exported/' + d, 'r')
+    fc = f.read()
+    # If it's a hit (the ordering of products is different)
+    if fc.find('hyper') &lt; fc.find('Traditional'):
+        # d[23:] == Get only the ciphertext from filename
+        r = decrypt(d[23:])
+        
+        # If the SQLi attempt targeted flag (not the SQL schema!)        
+        if r.find('flag') != -1:
+            chi = r.find(&quot;'&quot;) + 1
+            if chi != 0:
+                ch = r[chi]
+            indi = r.find(',') + 1
+            if indi != 0:
+                ind = r[indi:indi+2]
+                if ind[1] == ',':
+                    ind = ind[0]
+            if chi != 0:
+                print ind, ch
+                flag[int(ind)] = ch
+            
+print ''.join(flag)
+</code></pre>
+
+<p>And voila! Great challenge - thanks for the organizers!</p>
+
+<hr />
+
+<p>hh, <strong>PUT CTF team</strong></p>
+
+    </div>
+    
+        <div class="nav-left">
+    <a class="nav-item" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-website_attack%2f" title="Share on Facebook" target="_blank"><span class="fa fa-facebook fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://plus.google.com/share?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-website_attack%2f" title="Share on Google+" target="_blank"><span class="fa fa-google-plus fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-website_attack%2f" title="Share on LinkedIn" target="_blank"><span class="fa fa-linkedin fa-2x" aria-hidden="true"></span></a>
+    <a class="nav-item" href="https://twitter.com/home?status=SHA2017%20Teaser%3a%20Website%20attack - https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-website_attack%2f" title="Tweet this" target="_blank"><span class="fa fa-twitter fa-2x"></span></a>
+    <a class="nav-item" href="http://www.reddit.com/submit?url=https%3a%2f%2fput-ctf.github.io%2fblog%2fwriteups%2f2017-sha2017teaser-website_attack%2f&title=SHA2017%20Teaser%3a%20Website%20attack" title="Share on Reddit" target="_blank"><span class="fa fa-reddit-alien fa-2x" aria-hidden="true"></span></a>
+    
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; 2018, Poznań | <a href="https://github.com/mgjohansen/hucore.git" target="_blank">Hucore theme</a> & <a href="http://gohugo.io" target="_blank">Hugo</a> ♥</p>
+  </div>
+</section>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js" integrity="sha256-+bhVTaRmJ/c07eV80nU8gD2cBBF0rYkf1txqXlrbvb0=" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/python.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>

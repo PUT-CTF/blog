@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>2017 on PUT CTF blog</title>
+    <link>https://put-ctf.github.io/blog/tags/2017/</link>
+    <description>Recent content in 2017 on PUT CTF blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pl</language>
+    <copyright>&amp;copy; 2018, Poznań | &lt;a href=&#34;https://github.com/mgjohansen/hucore.git&#34; target=&#34;_blank&#34;&gt;Hucore theme&lt;/a&gt; &amp; &lt;a href=&#34;http://gohugo.io&#34; target=&#34;_blank&#34;&gt;Hugo&lt;/a&gt; ♥</copyright>
+    <lastBuildDate>Fri, 11 Aug 2017 14:20:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://put-ctf.github.io/blog/tags/2017/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>SHA2017 CTF: Wannafly</title>
+      <link>https://put-ctf.github.io/blog/writeups/2017-sha2017-wannafly/</link>
+      <pubDate>Fri, 11 Aug 2017 14:20:00 +0100</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/writeups/2017-sha2017-wannafly/</guid>
+      <description>Intro  My daughter Kimberly her computer got hacked. Now she lost all her favorite images. Can you please help me recover those images?
+ We received image of filesystem, where at first glance were only saved encrypted photos.
+But in home directory there were also two hidden files: one .bash_history and another ....
+unset HISTFIL ls -la pwd chmod +x ... ./... Hb8jnSKzaNQr5f7p ls -Rla  #!/usr/bin/env python import random, string, sys, os from time import time from Crypto.</description>
+    </item>
+    
+    <item>
+      <title>SHA2017 Teaser: Crypto engine</title>
+      <link>https://put-ctf.github.io/blog/writeups/2017-sha2017teaser-crypto_engine/</link>
+      <pubDate>Mon, 12 Jun 2017 00:00:00 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/writeups/2017-sha2017teaser-crypto_engine/</guid>
+      <description>Intro First we notice that color square is added for every three letters in text to encrypt. At the end of image we have n mod 3 two-decimal hex numbers. Also, color of previous squares didn&amp;rsquo;t change if we add more letters. Knowing that the flag must be in format flag{md5hash} we have tried encrypt flag{x
+And we get what we want to. RGB code of the first color was exactly the same as the color of the flag, and also second color had only different blue value in comprasion with the flag.</description>
+    </item>
+    
+    <item>
+      <title>SHA2017 Teaser: Website attack</title>
+      <link>https://put-ctf.github.io/blog/writeups/2017-sha2017teaser-website_attack/</link>
+      <pubDate>Sun, 11 Jun 2017 00:00:00 +0200</pubDate>
+      
+      <guid>https://put-ctf.github.io/blog/writeups/2017-sha2017teaser-website_attack/</guid>
+      <description>Website Attack (200) - 17 solves Our website received an attack in 2013, we managed to capture the attack in this pcap. Can you find out if we leaked some sensitive information?  The beginning - Wireshark problem After opening the provided pcap file in Wireshark, we could see that there&amp;rsquo;s a problem. Besides tcp packets, there were some malformed ones - which under closer inspection turned out to be named GSM over IP.</description>
+    </item>
+    
+  </channel>
+</rss>
