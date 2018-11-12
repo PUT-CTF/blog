@@ -1,7 +1,7 @@
 ---
 title: "PUT Security Day Challs"
 date: 2018-11-12T15:12:15+01:00
-draft: true
+draft: false
 ---
 
 ### Intro
